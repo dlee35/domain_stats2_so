@@ -41,7 +41,6 @@ RUN	cd /opt && \
 	pip3 install python-whois pyyaml requests && \
 	mkdir /var/log/domain_stats /opt/domain_stats/db && \
         sed -i 's|domain_stats\.db|/opt/domain_stats/db/domain_stats.db|' /opt/domain_stats/domain_stats.yaml && \
-	ln -sf /dev/stderr /var/log/domain_stats/domain_stats.log && \
 	chown -R domainstats: /opt/domain_stats
 
 USER domainstats

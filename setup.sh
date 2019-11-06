@@ -37,7 +37,9 @@ fi
   
 if [ ! -f /usr/sbin/so-domainstats-start.bak ]; then
   echo "Backing up /usr/sbin/so-domainstats-start to /usr/sbin/so-domainstats-start.bak, making the backup non-executable, and switching to locally built container..."
-  sed -i'.bak' 's|\$DOCKERHUB/so-domainstats|so-domainstats-test|' /usr/sbin/so-domainstats-start
+  sed -i'.bak' -e 's|\$DOCKERHUB/so-domainstats|so-domainstats-test|' -e 's|\(/var/log/domain_stats\)\:/var/log/domain_stats|\1/domain_stats.log:/opt/domain_stats/domain_stats.log|' /usr/sbin/so-domainstats-start
+  touch /var/log/domain_stats/domain_stats.log
+  chown -R domainstats: /var/log/domain_stats
   chmod -x /usr/sbin/so-domainstats-start.bak
 fi
   
