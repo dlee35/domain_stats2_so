@@ -12,6 +12,8 @@ export {
     redef enum Log::ID += { LOG };
     
     type Info: record {
+        ts: time             &log;
+        uid: string          &log;
         query: string        &log;
         seen_by_web: string  &log;
         seen_by_us: string   &log;
@@ -54,7 +56,7 @@ event dns_A_reply(c: connection; msg:dns_msg; ans:dns_answer; a:addr;)
                         local rank_num = strip(gsub(split_string(rank_parse,/:/)[1],/\"/,"")); 
                         local other_parse = gsub(split_string(resbody,/,/)[4],/\}|\{/,"");
                         local other_info = strip(gsub(split_string(other_parse,/:/)[1],/\"/,"")); 
-                        local rec: DomainStats::Info = [$query=domain, $seen_by_web=seen_by_web_date, $seen_by_us=seen_by_us_date, $seen_by_you=seen_by_you_date, $rank=rank_num, $other=other_info]; 
+                        local rec: DomainStats::Info = [$ts=c$start_time, $uid=c$uid, $query=domain, $seen_by_web=seen_by_web_date, $seen_by_us=seen_by_us_date, $seen_by_you=seen_by_you_date, $rank=rank_num, $other=other_info]; 
                         Log::write(DomainStats::LOG, rec);
                     }
                 }
