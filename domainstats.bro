@@ -41,7 +41,6 @@ event dns_A_reply(c: connection; msg:dns_msg; ans:dns_answer; a:addr;)
                 if (|res| > 0) {
                     if (res?$body && |split_string(res$body,/,/)| > 2) {
                         local resbody = fmt("%s", res$body);
-                        print(resbody);
                         local seen_by_web_parse = gsub(split_string(resbody,/,/)[0],/\{/,"");
                         local seen_by_web_date = strip(gsub(split_string(seen_by_web_parse,/:/)[1],/\"/,"")); 
                         local seen_by_us_parse = split_string(resbody,/,/)[1];
