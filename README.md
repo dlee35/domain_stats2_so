@@ -14,9 +14,9 @@ Perform the following steps to have Bro/Zeek create a new `domainstats.log` usin
   - `source(s_bro_domainstats);` to the `log` stanza
 - copy `bro_domainstats` to `/etc/elasticsearch/ingest/`
 - add the new Bro/Zeek script:
-  - `sudo mkdir -p /opt/bro/share/bro/policy/domainstats`
+  - `sudo mkdir /opt/bro/share/bro/policy/domainstats`
   - `echo '@load ./domainstats' | sudo tee -a /opt/bro/share/bro/policy/domainstats/__load__.bro`
-  - `sudo cp domainstats.bro /opt/bro/share/bro/policy/domainstats`
+  - `sudo cp domainstats.bro /opt/bro/share/bro/policy/domainstats/`
   - `echo '@load domainstats' | sudo tee -a /opt/bro/share/bro/site/local.bro`
 - copy `logstash-template.json` to `/etc/logstash/custom/`
 - `sudo systemctl restart syslog-ng`
