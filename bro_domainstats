@@ -1,0 +1,24 @@
+{
+  "description" : "bro_domainstats",
+  "processors" : [
+    { "json":	{ "field": "message",			"target_field": "message2",		"ignore_failure": true	} },
+    { "rename": { "field": "message2.uid", 	 	"target_field": "uid",			"ignore_missing": true 	} },
+    { "rename": { "field": "message2.query", 		"target_field": "query",		"ignore_missing": true 	} },
+    { "rename": { "field": "message2.seen_by_web", 	"target_field": "creation_date",	"ignore_missing": true 	} },
+    { "rename": { "field": "message2.seen_by_us", 	"target_field": "seen_by_us",		"ignore_missing": true 	} },
+    { "rename": { "field": "message2.seen_by_you", 	"target_field": "seen_by_you",		"ignore_missing": true 	} },
+    { "rename": { "field": "message2.rank", 		"target_field": "rank",			"ignore_missing": true 	} },
+    { "rename": { "field": "message2.other", 		"target_field": "other",		"ignore_missing": true 	} },
+    { "append":	{ "if": "ctx.seen_by_you == 'FIRST-CONTACT'", 	"field": "tags",		"value": ["first_contact"] } },
+    { "remove":	{ "if": "ctx.creation_date == 'ESTABLISHED'", "field": "creation_date",		"ignore_missing": true  } },
+    { "remove":	{ "if": "ctx.seen_by_us == 'ESTABLISHED'", "field": "seen_by_us",		"ignore_missing": true  } },
+    { "remove":	{ "if": "ctx.seen_by_us == 'FIRST-CONTACT'", "field": "seen_by_us",		"ignore_missing": true  } },
+    { "remove":	{ "if": "ctx.seen_by_you == 'FIRST-CONTACT'", "field": "seen_by_you",		"ignore_missing": true  } },
+    { "remove":	{ "if": "ctx.other == ''", 		"field": "other",			"ignore_missing": true  } },
+    { "date":	{ "field": "creation_date",		"formats" : ["yyyy-MM-dd HH:mm:ss"],	"ignore_failure": true	} },
+    { "date":	{ "field": "seen_by_us",		"formats" : ["yyyy-MM-dd HH:mm:ss"], 	"ignore_failure": true	} },
+    { "date":	{ "field": "seen_by_you",		"formats" : ["yyyy-MM-dd HH:mm:ss"],	"ignore_failure": true	} },
+    { "convert":{ "field": "rank",			"type": "integer"						} },
+    { "pipeline": { "name": "bro_common" } }
+  ]
+}
