@@ -24,15 +24,17 @@ fi
 
 # Creating directory for persistent domain_stats database
 if [ ! -d /etc/domain_stats ]; then
-  echo "Creating dir for persistent db..."
-  mkdir -p /etc/domain_stats
+  # Temporarily adding this until domain_stats2 pushes ease up 
+  git clone https://github.com/MarkBaggett/domain_stats2.git /etc/domain_stats
+  #echo "Creating dir for persistent db..."
+  #mkdir -p /etc/domain_stats
   chown -R domainstats:domainstats /etc/domain_stats
 fi
 
 # do something with --volume /etc/domain_stats:/opt/domain_stats/db
 if [ ! -f /etc/nsm/securityonion.conf.bak ]; then
   echo "Backing up /etc/nsm/securityonion.conf to /etc/nsm/securityonion.conf.bak and adjusting DOMAIN_STATS values..."
-  sed -i'.bak' -e 's|\(DOMAIN_STATS_ENABLED=\).*|\1"yes"|' -e 's|\(DOMAIN_STATS_OPTIONS=\).*|\1"--volume /etc/domain_stats:/opt/domain_stats/db"|' /etc/nsm/securityonion.conf
+  sed -i'.bak' -e 's|\(DOMAIN_STATS_ENABLED=\).*|\1"yes"|' -e 's|\(DOMAIN_STATS_OPTIONS=\).*|\1"--volume /etc/domain_stats:/opt/domain_stats"|' /etc/nsm/securityonion.conf
 fi
   
 if [ ! -f /usr/sbin/so-domainstats-start.bak ]; then

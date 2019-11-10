@@ -39,8 +39,7 @@ RUN	cd /opt && \
         chown domainstats: startup.sh && \
 	git clone https://github.com/MarkBaggett/domain_stats2.git domain_stats && \
 	pip3 install python-whois pyyaml requests && \
-	mkdir /var/log/domain_stats /opt/domain_stats/db && \
-        sed -i 's|domain_stats\.db|/opt/domain_stats/db/domain_stats.db|' /opt/domain_stats/domain_stats.yaml && \
+	mkdir /var/log/domain_stats && \
 	chown -R domainstats: /opt/domain_stats
 
 USER domainstats
