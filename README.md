@@ -1,6 +1,6 @@
 # domain_stats2_so
 
-### The setup script is to be used by those running Security Onion using the traditional Logstash pipeline (not LOGSTASH_MINIMAL). Everything will be setup without any manual modifications required.
+### The setup script is to be used by those running Security Onion using the traditional Logstash pipeline (not LOGSTASH_MINIMAL). Everything will be configured without any manual modifications required.
 
 run `sudo bash setup.sh`
 
