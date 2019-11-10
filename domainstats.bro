@@ -8,7 +8,7 @@ export {
     global domainstats_url = "http://localhost:20000/"; # add desired DS url here
     global ignore_domains = set(".test.net", ".bing.com", ".amazonaws.com", ".googleapis.com" ); # add domains to exclude here
     global queried_domains: table[string] of count &default=0 &create_expire=1days; # keep state of domains to prevent duplicate queries
-    global domain_suffixes = /""/; # idea borrowed from: https://github.com/theflakes/bro-large_uploads
+    global domain_suffixes = /MATCH_NOTHING/; # idea borrowed from: https://github.com/theflakes/bro-large_uploads
     redef enum Log::ID += { LOG };
     
     type Info: record {
@@ -47,11 +47,11 @@ event dns_A_reply(c: connection; msg:dns_msg; ans:dns_answer; a:addr;)
                     if (res?$body && |split_string(res$body,/,/)| > 2) {
                         local resbody = fmt("%s", res$body);
                         local seen_by_web_parse = gsub(split_string(resbody,/,/)[0],/\{/,"");
-                        local seen_by_web_date = strip(gsub(split_string(seen_by_web_parse,/:/)[1],/\"/,"")); 
+                        local seen_by_web_date = strip(split_string1(gsub(split_string1(seen_by_web_parse,/:/)[1],/\"/,""),/\./)[0]); 
                         local seen_by_us_parse = split_string(resbody,/,/)[1];
-                        local seen_by_us_date = strip(gsub(split_string(seen_by_us_parse,/:/)[1],/\"/,"")); 
+                        local seen_by_us_date = strip(split_string1(gsub(split_string1(seen_by_us_parse,/:/)[1],/\"/,""),/\./)[0]); 
                         local seen_by_you_parse = split_string(resbody,/,/)[2];
-                        local seen_by_you_date = strip(gsub(split_string(seen_by_you_parse,/:/)[1],/\"/,"")); 
+                        local seen_by_you_date = strip(split_string1(gsub(split_string1(seen_by_you_parse,/:/)[1],/\"/,""),/\./)[0]); 
                         local rank_parse = split_string(resbody,/,/)[3];
                         local rank_num = strip(gsub(split_string(rank_parse,/:/)[1],/\"/,"")); 
                         local other_parse = gsub(split_string(resbody,/,/)[4],/\}|\{/,"");
